@@ -62,8 +62,8 @@ class Item extends Component {
           src={data.thumbnailUrl}
           onClick={this.toggleModal}
         />
-        <Card.Body className="p-1">
-          <Card.Text>{data.title}</Card.Text>
+        <Card.Body className="p-1 d-flex align-items-center justify-content-center">
+          <small className="text-center">{data.title}</small>
         </Card.Body>
         {data.isFavorite && (
           <FontAwesome className="favorite" name="thumbs-up" />
