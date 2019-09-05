@@ -1,8 +1,28 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { PropTypes } from 'prop-types';
 import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
 
-export default () => (
-  <Navbar className="mb-3" bg="dark" variant="dark">
-    <Navbar.Brand href="#">Navbar</Navbar.Brand>
-  </Navbar>
-);
+function CustomNavbar({ favoriteCount }) {
+  return (
+    <Navbar className="mb-3" bg="dark" variant="dark">
+      <Navbar.Brand className="mr-auto" href="#">
+        Navbar
+      </Navbar.Brand>
+      <Nav>
+        <Nav.Item className="text-white">Favorites: {favoriteCount}</Nav.Item>
+      </Nav>
+    </Navbar>
+  );
+}
+
+const mapStateToProps = state => ({
+  favoriteCount: state.images.favoriteCount,
+});
+
+CustomNavbar.propTypes = {
+  favoriteCount: PropTypes.number.isRequired,
+};
+
+export default connect(mapStateToProps)(CustomNavbar);

@@ -3,6 +3,7 @@ import * as CONSTANTS from './constants';
 const initialState = {
   list: [],
   loading: false,
+  favoriteCount: 0,
 };
 
 export default (state = initialState, action) => {
@@ -23,6 +24,16 @@ export default (state = initialState, action) => {
         ...state,
         loading: false,
       };
+    case CONSTANTS.MARK_FAVORITE:
+      return {
+        ...state,
+        list: state.list.map(item => ({
+          ...item,
+          isFavorite: item.id === action.payload || item.isFavorite,
+        })),
+        favoriteCount: state.favoriteCount + 1,
+      };
+
     default:
       return state;
   }
