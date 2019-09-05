@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 
 import { getImagesRequest, markFavorite } from '../../redux/images/actions';
-import { Item, Pagination } from '../../components';
+import { Item, Pagination, LoadingContainer } from '../../components';
 
 class List extends Component {
   constructor(props) {
@@ -34,32 +34,30 @@ class List extends Component {
     const { list, loading } = this.props;
     const { currentPage, pageLimit } = this.state;
 
-    if (loading) {
-      return <div>Loading...</div>;
-    }
-
     return (
-      <Container>
-        <Row className="justify-content-center mb-4">
-          {list
-            .slice(currentPage * pageLimit, (currentPage + 1) * pageLimit)
-            .map(item => (
-              <Item
-                key={item.id}
-                data={item}
-                markFavorite={this.handleMarkFavorite}
-              />
-            ))}
-        </Row>
-        <Row className="justify-content-center">
-          <Pagination
-            currentPage={currentPage}
-            perPage={pageLimit}
-            total={list.length}
-            onChange={this.handleChangePage}
-          />
-        </Row>
-      </Container>
+      <LoadingContainer loading={loading} size="3x">
+        <Container>
+          <Row className="justify-content-center mb-4">
+            {list
+              .slice(currentPage * pageLimit, (currentPage + 1) * pageLimit)
+              .map(item => (
+                <Item
+                  key={item.id}
+                  data={item}
+                  markFavorite={this.handleMarkFavorite}
+                />
+              ))}
+          </Row>
+          <Row className="justify-content-center">
+            <Pagination
+              currentPage={currentPage}
+              perPage={pageLimit}
+              total={list.length}
+              onChange={this.handleChangePage}
+            />
+          </Row>
+        </Container>
+      </LoadingContainer>
     );
   }
 }
