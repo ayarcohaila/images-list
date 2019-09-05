@@ -5,6 +5,8 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import FontAwesome from 'react-fontawesome';
 
+import './Item.css';
+
 class Item extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +18,12 @@ class Item extends Component {
   toggleModal = () => {
     const { show } = this.state;
     this.setState({ show: !show });
+  };
+
+  markFavorite = imageId => {
+    const { markFavorite } = this.props;
+    this.toggleModal();
+    markFavorite(imageId);
   };
 
   renderModal = () => {
@@ -31,7 +39,11 @@ class Item extends Component {
           <img src={data.url} alt="Preview" />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="outline-primary" onClick={this.toggleModal}>
+          <Button
+            variant="outline-primary"
+            disabled={data.isFavorite}
+            onClick={() => this.markFavorite(data.id)}
+          >
             <FontAwesome name="thumbs-up" />
           </Button>
         </Modal.Footer>
@@ -43,9 +55,9 @@ class Item extends Component {
     const { data } = this.props;
 
     return (
-      <Card className="m-1" style={{ width: 150 }}>
+      <Card className="item m-1" style={{ width: 150 }}>
         <Card.Img
-          class="c-pointer"
+          className="c-pointer"
           variant="top"
           src={data.thumbnailUrl}
           onClick={this.toggleModal}
@@ -53,6 +65,9 @@ class Item extends Component {
         <Card.Body className="p-1">
           <Card.Text>{data.title}</Card.Text>
         </Card.Body>
+        {data.isFavorite && (
+          <FontAwesome className="favorite" name="thumbs-up" />
+        )}
         {this.renderModal()}
       </Card>
     );
@@ -61,6 +76,7 @@ class Item extends Component {
 
 Item.propTypes = {
   data: PropTypes.object.isRequired,
+  markFavorite: PropTypes.func.isRequired,
 };
 
 export default Item;
