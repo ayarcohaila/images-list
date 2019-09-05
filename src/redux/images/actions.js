@@ -13,3 +13,8 @@ export const getImagesSuccess = data => ({
 export const getImagesError = () => ({
   type: CONSTANTS.GET_IMAGES_ERROR,
 });
+
+export const markFavorite = imageId => ({
+  type: CONSTANTS.MARK_FAVORITE,
+  payload: imageId,
+});

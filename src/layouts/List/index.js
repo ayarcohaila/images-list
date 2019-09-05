@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 
-import { getImagesRequest } from '../../redux/images/actions';
+import { getImagesRequest, markFavorite } from '../../redux/images/actions';
 import { Item, Pagination } from '../../components';
 
 class List extends Component {
@@ -25,6 +25,11 @@ class List extends Component {
     this.setState({ currentPage });
   };
 
+  handleMarkFavorite = imageId => {
+    const { markAsFavorite } = this.props;
+    markAsFavorite(imageId);
+  };
+
   render() {
     const { list, loading } = this.props;
     const { currentPage, pageLimit } = this.state;
@@ -39,7 +44,11 @@ class List extends Component {
           {list
             .slice(currentPage * pageLimit, (currentPage + 1) * pageLimit)
             .map(item => (
-              <Item key={item.id} data={item} />
+              <Item
+                key={item.id}
+                data={item}
+                markFavorite={this.handleMarkFavorite}
+              />
             ))}
         </Row>
         <Row className="justify-content-center">
@@ -58,6 +67,7 @@ class List extends Component {
 List.propTypes = {
   list: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired,
+  markAsFavorite: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -67,6 +77,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   getImages: getImagesRequest,
+  markAsFavorite: markFavorite,
 };
 
 export default connect(
